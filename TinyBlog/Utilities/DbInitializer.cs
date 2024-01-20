@@ -8,15 +8,23 @@ namespace TinyBlog.Utilities
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public DbInitializer()
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public DbInitializer(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> rolemanager)
         {
-            
+            _context = context;
+            _userManager = userManager;
+            _roleManager = rolemanager;
+
         }
         public void Initialize()
         {
             
-
-            throw new NotImplementedException();
+            if(!_roleManager.RoleExistsAsync(WebsiteRoles.WebsiteAdmin).GetAwaiter().GetResult())
+            {
+                _roleManager.CreateAsync(new IdentityRole(WebsiteRoles.WebsiteAdmin));
+            }
+           
         }
     }
 }
