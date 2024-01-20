@@ -3,6 +3,6 @@
     public class WebsiteRoles
     {
         public const string? WebsiteAdmin = "Admin";
-        public const string? websiteAuthor = "Author";
+        public const string? WebsiteAuthor = "Author";
     }
 }
