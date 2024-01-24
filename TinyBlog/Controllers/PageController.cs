@@ -12,5 +12,10 @@ namespace TinyBlog.Controllers
         {
             return View();
         }
+        public IActionResult PrivacyPolicy()
+        {
+            return View();
+        }
     }
 }
+    
