@@ -37,6 +37,8 @@ namespace TinyBlog.Utilities
                 if (appUser != null)
                 {
                     _userManager.AddToRoleAsync(appUser,WebsiteRoles.WebsiteAdmin).GetAwaiter().GetResult();
+
+
                 }
 
             }
