@@ -8,6 +8,7 @@ namespace TinyBlog.Models
             public string? LastName { get; set;}
         public List<post>? posts { get; set; }
 
+
     }
 
 }
