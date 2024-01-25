@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TinyBlog.Data;
 using TinyBlog.Models;
+using TinyBlog.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,16 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+void Dataseeding()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var DbInitialize = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        DbInitialize.Initialize();
+
+    }
+}
+
