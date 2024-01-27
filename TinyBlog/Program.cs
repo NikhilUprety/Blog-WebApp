@@ -35,16 +35,9 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+           pattern: "{controller=Employee}/{action=Index}/{id?}";
+pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}";
 
 app.Run();
-void Dataseeding()
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var DbInitialize = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-        DbInitialize.Initialize();
 
-    }
-}
-
+ 
