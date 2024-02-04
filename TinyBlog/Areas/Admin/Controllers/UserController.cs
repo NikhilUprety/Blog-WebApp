@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TinyBlog.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class UserController : Controller
     {
