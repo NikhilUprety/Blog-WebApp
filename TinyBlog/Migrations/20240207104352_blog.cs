@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TinyBlog.Migrations
 {
-    public partial class init : Migration
+    public partial class blog : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

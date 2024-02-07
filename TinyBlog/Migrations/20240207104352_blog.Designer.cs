@@ -12,8 +12,8 @@ using TinyBlog.Data;
 namespace TinyBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240206104956_vmchange")]
-    partial class vmchange
+    [Migration("20240207104352_blog")]
+    partial class blog
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
