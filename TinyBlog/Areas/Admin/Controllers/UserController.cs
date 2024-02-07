@@ -9,7 +9,7 @@ using TinyBlog.ViewModel;
 
 namespace TinyBlog.Areas.Admin.Controllers
 {
-    
+
     [Area("Admin")]
     public class UserController : Controller
     {
@@ -25,42 +25,59 @@ namespace TinyBlog.Areas.Admin.Controllers
 
 
         }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();
         }
-            [HttpGet("login")]
-            public IActionResult Login()
+
+        [HttpGet("login")]
+        public IActionResult Login()
+        {
+            if (!HttpContext.User.Identity!.IsAuthenticated)
             {
                 return View(new loginVM());
 
-            }  
-        
-            [HttpPost("login")]
-            public async Task<IActionResult> Login(loginVM vm)
+            }
+            return RedirectToAction("Index", "User", new { Area = "Admin" });
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(loginVM vm)
+        {
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid) {
 
-                    return View(vm);
-            
-                }
-                var existingUSer =  await _userManager.Users.FirstOrDefaultAsync(x => x.UserName== vm.username);
-                if (existingUSer != null)
-                {
-                    _notification.Error("Username not found");
-                    return View(vm);
-                }
-                var checkpassword = await _userManager.CheckPasswordAsync( existingUSer, vm.password);
-                if (checkpassword == null) {
-
-                    _notification.Error("Password not found");
-                    return View(vm);
-                }
-                _SignInUser.PasswordSignInAsync(vm.username, vm.password, vm.RememberMe, true);
-                _notification.Success("login succesful");
-                return RedirectToAction("Index", "User", new { Areas = "Admin" });        
+                return View(vm);
 
             }
+            var existingUSer = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == vm.username);
+            if (existingUSer != null)
+            {
+                _notification.Error("Username not found");
+                return View(vm);
+            }
+            var checkpassword = await _userManager.CheckPasswordAsync(existingUSer, vm.password);
+            if (checkpassword == null)
+            {
+
+                _notification.Error("Password not found");
+                return View(vm);
+            }
+            _SignInUser.PasswordSignInAsync(vm.username, vm.password, vm.RememberMe, true);
+            _notification.Success("login succesful");
+            return RedirectToAction("Index", "User", new { Areas = "Admin" });
 
         }
+
+        public IActionResult logout()
+        {
+            _SignInUser.SignOutAsync();
+            return RedirectToAction("Index","Home",new {area = ""});
+            _notification.Success("succesfully logout");
+        }
+
+
     }
+}

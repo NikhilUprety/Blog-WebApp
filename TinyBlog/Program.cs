@@ -3,6 +3,7 @@ using AspNetCoreHero.ToastNotification.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using TinyBlog.Data;
 using TinyBlog.Models;
 using TinyBlog.Utilities;
@@ -21,10 +22,13 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 
-
-
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();
+
+builder.Services.ConfigureApplicationCookie(options=> {
+    options.LoginPath = "/login";
+        
+});
 
 var app = builder.Build();
 
