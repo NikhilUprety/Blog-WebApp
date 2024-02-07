@@ -1,9 +1,46 @@
-﻿@{
+﻿@model List<TinyBlog.ViewModel.UserVMcs>;
+@{
     ViewData["Title"] = "Index";
 }
     
 <div class="container-fluid">
+    <div class="card">
+        <div clss="card-head bg-primary">
+            <h2 class="text-white">List Of Users</h2>
+        </div>
+        <div class="card-body">
 
-    <h2>user index page</h2>
+        <table class="table table-striped table-hover">     
+            <thead>
+                <tr>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>UserName</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                    @foreach(var user in Model)
+                    {
+                        <tr>
+                            <th>@user.FirstName</th>
+                            <th>@user.LastName</th>
+                            <th>@user.Username</th>
+                            <th>
+                                <a></a>
+                                <a></a>
+                                <a></a>
+                            </th>
+                        </tr>
+                    }
+
+                        
+
+                   
+                </tbody>
+        </table>
+        </div>
+    </div>
+ 
 
 </div> 
