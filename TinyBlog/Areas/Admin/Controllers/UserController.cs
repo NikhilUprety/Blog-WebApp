@@ -25,13 +25,21 @@ namespace TinyBlog.Areas.Admin.Controllers
 
 
         }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
+[Authorize(Roles = "Admin")]
+[HttpGet]
+public async Task<IActionResult> Index()
+{
+    var users = await _userManager.Users.ToListAsync();
+    var vm = users.Select(x => new UserVMcs()
+    {
+        ID = x.Id,
+        FirstName = x.FirstName,
+        LastName = x.LastName,
+        Username = x.UserName
+    }).ToList();
+        
+    return View(vm);  
+}
         [HttpGet("login")]
         public IActionResult Login()
         {
@@ -53,7 +61,7 @@ namespace TinyBlog.Areas.Admin.Controllers
 
             }
             var existingUSer = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == vm.username);
-            if (existingUSer != null)
+            if (existingUSer == null)
             {
                 _notification.Error("Username not found");
                 return View(vm);
@@ -65,9 +73,9 @@ namespace TinyBlog.Areas.Admin.Controllers
                 _notification.Error("Password not found");
                 return View(vm);
             }
-            _SignInUser.PasswordSignInAsync(vm.username, vm.password, vm.RememberMe, true);
+            await _SignInUser.PasswordSignInAsync(vm.username, vm.password, vm.RememberMe, true);
             _notification.Success("login succesful");
-            return RedirectToAction("Index", "User", new { Areas = "Admin" });
+            return RedirectToAction("Index", "User", new { Area = "Admin" });
 
         }
 
@@ -76,7 +84,7 @@ namespace TinyBlog.Areas.Admin.Controllers
             _SignInUser.SignOutAsync();
             return RedirectToAction("Index","Home",new {area = ""});
             _notification.Success("succesfully logout");
-        }
+        }       
 
 
     }
