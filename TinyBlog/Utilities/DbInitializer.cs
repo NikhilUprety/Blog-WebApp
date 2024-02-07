@@ -18,9 +18,9 @@ namespace TinyBlog.Utilities
             _roleManager = rolemanager;
 
         }
+
         public void Initialize()
         {
-
             if (!_roleManager.RoleExistsAsync(WebsiteRoles.WebsiteAdmin).GetAwaiter().GetResult())
             {
                 _roleManager.CreateAsync(new IdentityRole(WebsiteRoles.WebsiteAdmin)).GetAwaiter().GetResult();
@@ -38,9 +38,7 @@ namespace TinyBlog.Utilities
                 {
                     _userManager.AddToRoleAsync(appUser, WebsiteRoles.WebsiteAdmin).GetAwaiter().GetResult();
                 }
-
             }
-
         }
 
     }
