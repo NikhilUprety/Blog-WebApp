@@ -67,7 +67,7 @@ public async Task<IActionResult> Index()
                 return View(vm);
             }
             var checkpassword = await _userManager.CheckPasswordAsync(existingUSer, vm.password);
-            if (checkpassword == null)
+            if (!checkpassword)
             {
 
                 _notification.Error("Password not found");

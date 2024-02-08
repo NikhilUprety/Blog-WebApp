@@ -3,7 +3,9 @@
     ViewData["Title"] = "Index";
 }
     
-<div class="container-fluid">
+<div class="container">
+
+
     <div class="card">
         <div clss="card-head bg-primary">
             <h2 class="text-white">List Of Users</h2>
@@ -26,10 +28,18 @@
                             <th>@user.FirstName</th>
                             <th>@user.LastName</th>
                             <th>@user.Username</th>
-                            <th>
-                                <a></a>
-                                <a></a>
-                                <a></a>
+
+                            <th class="d-flex flex-row align-items-center justify-content-between">
+                                <a class="bg-danger p-1 text-light rounded ">
+
+                                    <ion-icon name="trash-outline"></ion-icon>
+                                </a>
+                                <a class="bg-success p-1 text-light rounded">
+                                    <ion-icon name="create-outline"></ion-icon>
+                                </a>
+                                <a  class="bg-primary p-1 text-light rounded">
+                                    <ion-icon name="person-circle-outline"></ion-icon>
+                                </a>
                             </th>
                         </tr>
                     }
@@ -44,3 +54,5 @@
  
 
 </div> 
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.js"></script>
