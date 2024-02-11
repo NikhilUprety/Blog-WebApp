@@ -1,5 +1,51 @@
-﻿<form>
-    <div class="register-table">
-            
+﻿@model TinyBlog.ViewModel.RegisterVM
+@{
+    ViewData["Title"] = "Register User";
+}
+<div class="container-fluid" >
+
+<a class=" mb-2 btn btn-success" asp-action="Index" asp-controller="User" asp-area="Admin">BACK TO INDEX</a>
+<div class="card">
+    <div class="card-head bg-primary">
+        <h2 class="text-white mt-2 ml-3">List Of Users</h2>
     </div>
-</form>
+    <div class="card-body">
+        <form asp-action="Register" asp-controller="User" asp-area="Admin">
+            <div class="mb-2">
+                <label>Frstname</label>
+                <input type="text" asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label>LastName</label>
+                <input type="text" asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label>Email</label>
+                <input type="email" asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div> 
+            <div class="mb-2">
+                <label>Username</label>
+                <input type="text" asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label>Password</label>
+                <input type="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <input type="checkbox" asp-for="IsAdmin" class="custom-checkbox" />
+                <label>Is Admin?</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+
+        </form>
+       
+</div>
+
+</div>
+
+</div> 

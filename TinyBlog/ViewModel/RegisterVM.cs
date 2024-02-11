@@ -11,6 +11,7 @@ namespace TinyBlog.ViewModel
         public string LastName { get; set; }
 
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
@@ -19,8 +20,7 @@ namespace TinyBlog.ViewModel
         [Required]
         public string? UserName { get; set; }
 
-
-
+        public bool IsAdmin { get; set; }
 
     }
 }

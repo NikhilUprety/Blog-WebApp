@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Text;
 using TinyBlog.Models;
+using TinyBlog.Utilities;
 using TinyBlog.ViewModel;
 
 namespace TinyBlog.Areas.Admin.Controllers
@@ -45,8 +46,58 @@ public async Task<IActionResult> Index()
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            return View(new RegisterVM());
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+
+        public async Task<IActionResult>  Register(RegisterVM vm)
+        {
+            if (!ModelState.IsValid)
+            {
+            return View(vm);
+
+            }
+          var checkemail = await  _userManager.FindByEmailAsync(vm.Email);
+            if (checkemail != null)
+            {
+                _notification.Error("Email already exist");
+                return View(vm);
+            }
+            var checkusername = await _userManager.FindByNameAsync(vm.UserName);
+            if(checkusername != null)
+            {
+                _notification.Error($"User name: {vm.UserName} already taken");
+                return View(vm);
+
+            }
+            var applicationuser = new ApplicationUser()
+            {
+                Email = vm.Email,
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                UserName = vm.UserName
+            };
+            var result =await  _userManager.CreateAsync(applicationuser, vm.Password);
+            if (result.Succeeded)
+            {
+                if (vm.IsAdmin)
+                {
+                    await _userManager.AddToRoleAsync(applicationuser, WebsiteRoles.WebsiteAdmin);
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(applicationuser,WebsiteRoles.WebsiteAuthor);
+                }
+                _notification.Success("user registered succesfuly");
+                return RedirectToAction("Index","User",new {area = "Admin"});
+            }
+            return View(vm);
+
+        }
+       
+        
 
         [HttpGet("login")]
         public IActionResult Login()
