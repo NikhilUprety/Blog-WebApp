@@ -40,6 +40,14 @@ public async Task<IActionResult> Index()
         
     return View(vm);  
 }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
         [HttpGet("login")]
         public IActionResult Login()
         {
