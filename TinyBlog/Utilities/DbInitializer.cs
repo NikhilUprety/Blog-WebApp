@@ -1,8 +1,7 @@
 ﻿using TinyBlog.Data;
 using TinyBlog.Models;
 using Microsoft.AspNetCore.Identity;
-using TinyBlog.Data;
-using TinyBlog.Models;
+
 using TinyBlog.Utilities;
 
 namespace FineBlog.Utilites
