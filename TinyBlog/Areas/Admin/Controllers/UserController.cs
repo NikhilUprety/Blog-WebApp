@@ -8,6 +8,7 @@ using TinyBlog.Models;
 using TinyBlog.Utilities;
 using TinyBlog.ViewModel;
 
+
 namespace TinyBlog.Areas.Admin.Controllers
 {
 
@@ -36,8 +37,17 @@ public async Task<IActionResult> Index()
         ID = x.Id,
         FirstName = x.FirstName,
         LastName = x.LastName,
-        Username = x.UserName
+        Username = x.UserName,
+        Email = x.Email,
     }).ToList();
+
+    foreach (var user in vm)
+            {
+                var singleuser =await _userManager.FindByIdAsync(user.ID);
+                var role = await _userManager.GetRolesAsync(singleuser);
+                user.Role = role.FirstOrDefault();
+            }
+
         
     return View(vm);  
 }
@@ -48,56 +58,49 @@ public async Task<IActionResult> Index()
         {
             return View(new RegisterVM());
         }
-
         [Authorize(Roles = "Admin")]
         [HttpPost]
-
-        public async Task<IActionResult>  Register(RegisterVM vm)
+        public async Task<IActionResult> Register(RegisterVM vm)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) { return View(vm); }
+            var checkUserByEmail = await _userManager.FindByEmailAsync(vm.Email);
+            if (checkUserByEmail != null)
             {
-            return View(vm);
-
-            }
-          var checkemail = await  _userManager.FindByEmailAsync(vm.Email);
-            if (checkemail != null)
-            {
-                _notification.Error("Email already exist");
+                _notification.Error("Email already exists");
                 return View(vm);
             }
-            var checkusername = await _userManager.FindByNameAsync(vm.UserName);
-            if(checkusername != null)
+            var checkUserByUsername = await _userManager.FindByNameAsync(vm.UserName);
+            if (checkUserByUsername != null)
             {
-                _notification.Error($"User name: {vm.UserName} already taken");
+                _notification.Error("Username already exists");
                 return View(vm);
-
             }
-            var applicationuser = new ApplicationUser()
+
+            var applicationUser = new ApplicationUser()
             {
                 Email = vm.Email,
+                UserName = vm.UserName,
                 FirstName = vm.FirstName,
-                LastName = vm.LastName,
-                UserName = vm.UserName
+                LastName = vm.LastName
             };
-            var result =await  _userManager.CreateAsync(applicationuser, vm.Password);
+
+            var result = await _userManager.CreateAsync(applicationUser, vm.Password);
             if (result.Succeeded)
             {
                 if (vm.IsAdmin)
                 {
-                    await _userManager.AddToRoleAsync(applicationuser, WebsiteRoles.WebsiteAdmin);
+                    await _userManager.AddToRoleAsync(applicationUser, WebsiteRoles.WebsiteAdmin);
                 }
                 else
                 {
-                    await _userManager.AddToRoleAsync(applicationuser,WebsiteRoles.WebsiteAuthor);
+                    await _userManager.AddToRoleAsync(applicationUser, WebsiteRoles.WebsiteAuthor);
                 }
-                _notification.Success("user registered succesfuly");
-                return RedirectToAction("Index","User",new {area = "Admin"});
+                _notification.Success("User registered successfully");
+                return RedirectToAction("Index", "User", new { area = "Admin" });
             }
             return View(vm);
-
         }
-       
-        
+
 
         [HttpGet("login")]
         public IActionResult Login()
@@ -134,15 +137,15 @@ public async Task<IActionResult> Index()
             }
             await _SignInUser.PasswordSignInAsync(vm.username, vm.password, vm.RememberMe, true);
             _notification.Success("login succesful");
-            return RedirectToAction("Index", "User", new { Area = "Admin" });
+            return RedirectToAction("Index", "User", new { area = "Admin" });
 
         }
 
         public IActionResult logout()
         {
             _SignInUser.SignOutAsync();
-            return RedirectToAction("Index","Home",new {area = ""});
             _notification.Success("succesfully logout");
+            return RedirectToAction("Index","Home",new {area = ""});
         }       
 
 
