@@ -18,6 +18,8 @@
                     <th>FirstName</th>
                     <th>LastName</th>
                     <th>UserName</th>
+                    <th>Email</th>
+                    <th>Role</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -28,17 +30,21 @@
                             <th>@user.FirstName</th>
                             <th>@user.LastName</th>
                             <th>@user.Username</th>
+                            <th>@user.Email</th>
+                            <th>@user.Role</th>
+
 
                             <th class="d-flex flex-row align-items-center justify-content-between">
+                         
+                                <a class="bg-success p-1 text-light rounded">
+                                    <ion-icon name="create-outline">Reset Password</ion-icon>
+                                </a>
                                 <a class="bg-danger p-1 text-light rounded ">
 
                                     <ion-icon name="trash-outline"></ion-icon>
                                 </a>
-                                <a class="bg-success p-1 text-light rounded">
-                                    <ion-icon name="create-outline"></ion-icon>
-                                </a>
                                 <a class="bg-primary p-1 text-light rounded">
-                                    <ion-icon name="person-circle-outline"></ion-icon>
+                                    <ion-icon name="person-circle-outline"></ion-icon>  
                                 </a>
 
                             </th>
