@@ -1,12 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @inject UserManager<ApplicationUser> _usermanager;
 @{
-    var logedInUser = new ApplicationUser();
-    logedInUser = _usermanager.Users?.FirstOrDefault(x => x.UserName == User.Identity!.Name);   
+  var  logedInUser =await  _usermanager.FindByNameAsync(User.Identity.Name);   
 
  }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en">    
 
 <head>
 
