@@ -5,9 +5,7 @@ using TinyBlog.Models;
 using TinyBlog.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TinyBlog.Data;
-using TinyBlog.Models;
-using TinyBlog.Utilities;
+
 using FineBlog.Utilites;
 
 var builder = WebApplication.CreateBuilder(args);
