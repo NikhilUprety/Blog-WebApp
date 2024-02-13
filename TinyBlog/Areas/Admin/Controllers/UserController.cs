@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Common;
+using NuGet.Protocol.Plugins;
 using System.Drawing.Text;
 using TinyBlog.Models;
 using TinyBlog.Utilities;
@@ -52,12 +54,67 @@ public async Task<IActionResult> Index()
     return View(vm);  
 }
 
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+         public  async Task<IActionResult>  ResetPassword(string id)
+        {
+            var existing_user =await _userManager.FindByIdAsync(id);
+            if (existing_user == null)
+            {
+                _notification.Error("user not found");
+                return View();
+            }
+            var vm = new ResetPasswordVM()
+            {
+                Id = existing_user.Id,
+                Username=existing_user.UserName
+                    
+            };
+            
+            return View(vm);
+            //return RedirectToAction("Index", "User", new { area ="Admin"});
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordVM vm)
+        {
+            if (!ModelState.IsValid)
+            {
+
+             _notification.Error("Password cant be generated");
+             return View(vm);
+                
+            }
+            var existinguser =await _userManager.FindByIdAsync(vm.Id);
+            if (existinguser == null)
+            {
+
+                _notification.Error("User not found");
+                return View(vm);
+            }
+            var token = await _userManager.GeneratePasswordResetTokenAsync(existinguser);
+            var result = await _userManager.ResetPasswordAsync(existinguser,token,vm.NewPassword);
+            if (result.Succeeded)
+            {
+                _notification.Success("password updated");
+                return RedirectToAction("Index");
+            }
+            return View(vm);
+
+        } 
+
+
+
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Register()
         {
             return View(new RegisterVM());
         }
+
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM vm)
