@@ -76,34 +76,28 @@ public async Task<IActionResult> Index()
             //return RedirectToAction("Index", "User", new { area ="Admin"});
         }
 
-        [Authorize]
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordVM vm)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) { return View(vm); }
+            var existingUser = await _userManager.FindByIdAsync(vm.Id);
+            if (existingUser == null)
             {
-
-             _notification.Error("Password cant be generated");
-             return View(vm);
-                
-            }
-            var existinguser =await _userManager.FindByIdAsync(vm.Id);
-            if (existinguser == null)
-            {
-
-                _notification.Error("User not found");
+                _notification.Error("User doesnot exist");
                 return View(vm);
             }
-            var token = await _userManager.GeneratePasswordResetTokenAsync(existinguser);
-            var result = await _userManager.ResetPasswordAsync(existinguser,token,vm.NewPassword);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(existingUser);
+            var result = await _userManager.ResetPasswordAsync(existingUser, token, vm.NewPassword);
             if (result.Succeeded)
             {
-                _notification.Success("password updated");
-                return RedirectToAction("Index");
+                _notification.Success("Password reset sucessful");
+                return RedirectToAction(nameof(Index));
             }
             return View(vm);
+        }
 
-        } 
 
 
 
@@ -167,7 +161,7 @@ public async Task<IActionResult> Index()
                 return View(new loginVM());
 
             }
-            return RedirectToAction("Index", "User", new { Area = "Admin" });
+            return RedirectToAction("Index", "Post", new { Area = "Admin" });
         }
 
         [HttpPost("login")]
@@ -194,17 +188,24 @@ public async Task<IActionResult> Index()
             }
             await _SignInUser.PasswordSignInAsync(vm.username, vm.password, vm.RememberMe, true);
             _notification.Success("login succesful");
-            return RedirectToAction("Index", "User", new { area = "Admin" });
+            return RedirectToAction("Index", "Post", new { area = "Admin" });
 
         }
 
+        [Authorize]
         public IActionResult logout()
         {
             _SignInUser.SignOutAsync();
             _notification.Success("succesfully logout");
             return RedirectToAction("Index","Home",new {area = ""});
-        }       
+        }
 
+        [HttpGet("AccessDenied")]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+      
 
     }
 }
