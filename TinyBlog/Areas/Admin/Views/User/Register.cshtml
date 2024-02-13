@@ -7,10 +7,10 @@
 <a class=" mb-2 btn btn-success" asp-action="Index" asp-controller="User" asp-area="Admin">BACK TO INDEX</a>
 <div class="card">
     <div class="card-head bg-primary">
-        <h2 class="text-white mt-2 ml-3">List Of Users</h2>
+        <h2 class="text-white mt-2 ml-3">ADD USER</h2>
     </div>
     <div class="card-body">
-        <form asp-action="Register" asp-controller="User" asp-area="Admin">
+        <form method="post" asp-action="Register" asp-controller="User" asp-area="Admin">
             <div class="mb-2">
                 <label>Frstname</label>
                 <input type="text" asp-for="FirstName" class="form-control" />
