@@ -12,7 +12,7 @@
         </div>
         <div class="card-body">
                 
-            <table class="table table-striped table-hover" id="myTable">
+            <table class="table table-striped tab                   le-hover" id="myTable">
                 <thead>
                 <tr>
                     <th>FirstName</th>
@@ -36,7 +36,7 @@
 
                             <th class="d-flex flex-row align-items-center justify-content-between">
                          
-                                <a class="bg-success p-1 text-light rounded">
+                                <a class="bg-success p-1 text-light rounded" asp-action="ResetPassword" asp-controller="User" asp-route-id="@user.ID">
                                     <ion-icon name="create-outline">Reset Password</ion-icon>
                                 </a>
                                 <a class="bg-danger p-1 text-light rounded ">
