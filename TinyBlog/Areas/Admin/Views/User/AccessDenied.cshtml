@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Post IndexPage";
+}
+
+<div class="container">
+
+    @*  <a class="btn btn-primary mb-2" asp-action="Register" asp-controller="User" asp-area="Admin">Add User</a> *@
+    <div class="card">
+        <div class="card-head bg-primary">
+            <h2 class="text-white mt-2 ml-3">POST PAGE</h2>
+        </div>
+        <div class="card-body">
+
+            <div class="text-center">
+                <div class="error mx-auto" data-text="401">401</div>
+                <p class="lead text-gray-800 mb-5">Page Not Found</p>
+                <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
+                <a asp-action="index" asp-controller="Post" asp-area="Admin">&larr; Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script type="module" src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.js"></script>
