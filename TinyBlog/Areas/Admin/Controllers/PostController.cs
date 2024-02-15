@@ -7,6 +7,9 @@ using TinyBlog.Models;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using System.Drawing;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using TinyBlog.Utilities;
 
 namespace TinyBlog.Areas.Admin.Controllers
 {
@@ -15,17 +18,19 @@ namespace TinyBlog.Areas.Admin.Controllers
     public class PostController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly INotyfService _notification;
+        public INotyfService _notification { get; }
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PostController(ApplicationDbContext context,UserManager<ApplicationUser> userManager,
-            INotyfService notification, IWebHostEnvironment webHostEnvironment)
+        public PostController(ApplicationDbContext context,
+                                INotyfService notyfService,
+                                IWebHostEnvironment webHostEnvironment,
+                                UserManager<ApplicationUser> userManager)
         {
-            context = _context;
-            _userManager = userManager;
-            _notification = notification;
+            _context = context;
+            _notification = notyfService;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -41,54 +46,57 @@ namespace TinyBlog.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost(CreatePostVMcs vm)
         {
-            if (!ModelState.IsValid) { }
-            {
-                return View(vm);
-            }
+            if (!ModelState.IsValid) { return View(vm); }
 
-            var logedInUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            
+            var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity!.Name);
+
             var post = new post();
 
             post.Title = vm.Title;
             post.Description = vm.Description;
             post.ShortDescription = vm.ShortDescription;
-            post.ApplicationUserID = logedInUser.Id;
-            
-            if(post.Title != null)
+            post.ApplicationUserID = loggedInUser!.Id;
+
+            if (post.Title != null)
             {
-                string slug = vm.Title.Trim();
-                slug=slug.Replace("","_");
-                post.slug = slug+"_"+Guid.NewGuid();
+                string slug = vm.Title!.Trim();
+                slug = slug.Replace(" ", "-");
+                post.slug = slug + "-" + Guid.NewGuid();
             }
 
-            if(vm.Thumbnail!= null) {
-
-                post.ThumbnailUrl=UploadImage(vm.Thumbnail);
+            if (vm.Thumbnail != null)
+            {
+                post.ThumbnailUrl = UploadImage(vm.Thumbnail);
             }
 
-            await _context.AddAsync(post);
+            await _context.PostTable!.AddAsync(post);
             await _context.SaveChangesAsync();
-            _notification.Success("post saved successfully");
-            return RedirectToAction("Index","Post",new { area ="Admin"});
+            _notification.Success("Post Created Successfully");
+            return RedirectToAction("Index");
         }
 
-       private string UploadImage(IFormFile file)
+
+
+
+        private string UploadImage(IFormFile file)
         {
-            var uniquefilename = "";
-            var folderpath = Path.Combine(_webHostEnvironment.WebRootPath,"Thumbnail");
-            uniquefilename = Guid.NewGuid().ToString()+"_"+file.FileName;
-            var filePath = Path.Combine(folderpath,uniquefilename);
+            string uniqueFileName = "";
+            var folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "thumbnails");
+            uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+            var filePath = Path.Combine(folderPath, uniqueFileName);
             using (FileStream fileStream = System.IO.File.Create(filePath))
             {
                 file.CopyTo(fileStream);
             }
-            return uniquefilename;
+            return uniqueFileName;
         }
 
 
 
-         
 
 
-    } 
+
+
+    }
 }
