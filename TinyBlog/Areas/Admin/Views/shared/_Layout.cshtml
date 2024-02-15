@@ -83,7 +83,9 @@
                             <a class="collapse-item" asp-area="Admin" asp-controller="Page" asp-action="About">About</a>
                             <a class="collapse-item" asp-area="Admin" asp-controller="Page" asp-action="Contact">Contact</a>
                             <a class="collapse-item" asp-area="Admin" asp-controller="Page" asp-action="Privacy">Privacy Policy</a>
+                           
                         </div>
+
                     </div>
                 </li>
 
@@ -161,6 +163,7 @@
             <!-- End of Footer -->
 
         </div>
+        </div>
         <!-- End of Content Wrapper -->
 
     </div>
@@ -195,7 +198,7 @@
             });
         </script>
 
-        @await Component.InvokeAsync("Notyf")
+     @await Component.InvokeAsync("Notyf")
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
