@@ -1,22 +1,21 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Post IndexPage";
 }
 
-   <div class="container-fluid">
+<div class="container-fluid">
     <div class="card">
         <div class="head d-flex justify-content-between align-items-center bg-primary">
             <div class="card-head bg-primary">
                 <h2 class="text-white mt-2 ml-3">POST PAGE</h2>
             </div>
             <div class="d-flex align-items-center">
-                <a class="bg-primary p-1 text-light rounded" asp-action="Create" asp-controller="Post" asp-area="Admin">
+                <a class="bg-primary p-1 text-light rounded" asp-action="CreatePost" asp-controller="Post" asp-area="Admin">
                     <ion-icon name="add-circle-outline" style=" font-size: 36px;"></ion-icon>
                 </a>
             </div>
         </div>
         <div class="card-body">
-            post are written here               
+            post are written here
             <!-- Your content goes here -->
         </div>
     </div>
@@ -26,4 +25,4 @@
 
 
 <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.js"></script>
+<script nomodule src="https://cdn.jsdelivr.net/npm/ionicons/dist/ionicons/ionicons.js"></script>	     
