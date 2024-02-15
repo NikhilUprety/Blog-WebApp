@@ -4,12 +4,14 @@
 }
 <div class="container-fluid" >
 
-<a class=" mb-2 btn btn-success" asp-action="Index" asp-controller="User" asp-area="Admin">BACK TO INDEX</a>
-<div class="card">
+    <a class=" mb-2 btn btn-success" asp-action="Index" asp-controller="User" asp-area="Admin">Go Back</a>
+<div class=" row justify-content-center">
+<div class="card col-md-5 ">
     <div class="card-head bg-primary">
         <h2 class="text-white mt-2 ml-3">ADD USER</h2>
     </div>
     <div class="card-body">
+     
         <form method="post" asp-action="Register" asp-controller="User" asp-area="Admin">
             <div class="mb-2">
                 <label>Frstname</label>
@@ -49,3 +51,4 @@
 </div>
 
 </div> 
+</div>
