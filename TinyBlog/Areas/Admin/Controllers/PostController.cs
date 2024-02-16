@@ -10,6 +10,8 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using TinyBlog.Utilities;
+using System.Linq;
+using AspNetCore;
 
 namespace TinyBlog.Areas.Admin.Controllers
 {
@@ -32,9 +34,32 @@ namespace TinyBlog.Areas.Admin.Controllers
             _webHostEnvironment = webHostEnvironment;
             _userManager = userManager;
         }
-        public IActionResult Index()
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var listofposts = new List<post>();
+            var LoggedInUser =await _userManager.Users.FirstOrDefaultAsync(x=>x.UserName==User.Identity!.Name);
+            var LoggedInUserRole = await _userManager.GetRolesAsync(LoggedInUser!);
+            if (LoggedInUserRole[0] == WebsiteRoles.WebsiteAdmin)
+            {
+                listofposts = await _context.PostTable!.Include(x=>x.ApplicationUser).ToListAsync();
+            }
+            else
+            {
+                listofposts = await _context.PostTable!.Include(x => x.ApplicationUser).Where(x => x.ApplicationUser!.Id == LoggedInUser!.Id).ToListAsync();
+            }
+            var listofPostsVM = listofposts.Select(x=>new PostVM()
+            {
+                Id = x.Id,
+                Title = x.Title,
+                CreatedDate = x.CreatedTime,
+                ThumbnailUrl = x.ThumbnailUrl,
+                AuthorName=x.ApplicationUser!.FirstName+" "+x.ApplicationUser!.LastName
+
+
+            }).ToList();
+            return View(listofPostsVM);
         }
 
         [HttpGet]
@@ -76,6 +101,22 @@ namespace TinyBlog.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        private Task<IActionResult> Delete(int id)
+        {
+            var post=_context.PostTable!.FirstOrDefault(x => x.Id == id);
+            var loggedInUser = _userManager.Users.FirstOrDefault(x=>x.Id==x.Id);
+             var userrole =_userManager.GetRolesAsync(loggedInUser);
+            if (userrole == WebsiteRoles.WebsiteAdmin)
+            {
+                Views_Shared_Compone
+
+            }
+
+
+            return RedirectToAction("Index","Post",new{ area = "Admin" });
+
+
+        }
 
 
 
