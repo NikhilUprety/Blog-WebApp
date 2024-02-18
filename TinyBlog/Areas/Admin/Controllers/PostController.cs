@@ -101,24 +101,24 @@ namespace TinyBlog.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        private Task<IActionResult> Delete(int id)
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
         {
-            var post=_context.PostTable!.FirstOrDefault(x => x.Id == id);
-            var loggedInUser = _userManager.Users.FirstOrDefault(x=>x.Id==x.Id);
-             var userrole =_userManager.GetRolesAsync(loggedInUser);
-            if (userrole == WebsiteRoles.WebsiteAdmin)
+            var post = await _context.PostTable!.FirstOrDefaultAsync(x => x.Id == id);
+
+            var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity!.Name);
+            var loggedInUserRole = await _userManager.GetRolesAsync(loggedInUser!);
+
+            if (loggedInUserRole[0] == WebsiteRoles.WebsiteAdmin || loggedInUser?.Id == post?.ApplicationUserID)
             {
-                Views_Shared_Compone
-
+                _context.PostTable!.Remove(post!);
+                await _context.SaveChangesAsync();
+                _notification.Success("Post Deleted Successfully");
+                return RedirectToAction("Index", "Post", new { area = "Admin" });
             }
-
-
-            return RedirectToAction("Index","Post",new{ area = "Admin" });
-
-
+            return View();
         }
-
-
 
         private string UploadImage(IFormFile file)
         {
