@@ -35,10 +35,13 @@
                                 <a class="bg-success p-1 text-light rounded" asp-action="Edit" asp-controller="Post" asp-route-id="@post.Id">
                                     <ion-icon name="create-outline" style="font-size: 28px;"></ion-icon>
                                 </a> |
-                                <a class="bg-danger p-1 text-light rounded" asp-area="Admin" asp-action="Delete" asp-controller="Post" asp-route-id="@post.Id">
+                                <form method="post" asp-area="Admin" asp-action="Delete" asp-controller="Post" asp-route-id="@post.Id" onsubmit="return confirm('Are you sure you want to delete?')">
+                                   <input type="hidden" name="id" value="@post.Id">
 
-                                    <ion-icon name="trash-outline" style="font-size: 28px;"></ion-icon>
-                                </a>
+                                    <button type="submit" class="bg-danger p-1 text-light rounded" style="border: none; background-color: transparent;">
+                                        <ion-icon name="trash-outline" style="font-size: 28px;"></ion-icon>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
