@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using TinyBlog.Utilities;
 using System.Linq;
 using AspNetCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Build.Logging;
 
 namespace TinyBlog.Areas.Admin.Controllers
 {
@@ -39,7 +41,10 @@ namespace TinyBlog.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var listofposts = new List<post>();
-            var LoggedInUser =await _userManager.Users.FirstOrDefaultAsync(x=>x.UserName==User.Identity!.Name);
+            var LoggedInUser =await _userManager.Users.FirstOrDefaultAsync(x=>x.UserName==User.Identity!.Name); 
+            if (LoggedInUser != null)
+            {
+
             var LoggedInUserRole = await _userManager.GetRolesAsync(LoggedInUser!);
             if (LoggedInUserRole[0] == WebsiteRoles.WebsiteAdmin)
             {
@@ -57,9 +62,15 @@ namespace TinyBlog.Areas.Admin.Controllers
                 ThumbnailUrl = x.ThumbnailUrl,
                 AuthorName=x.ApplicationUser!.FirstName+" "+x.ApplicationUser!.LastName
 
-
+                    
             }).ToList();
             return View(listofPostsVM);
+            }
+            else {
+
+                _notification.Warning("user not found");
+                return View(listofposts); 
+            }
         }
 
         [HttpGet]
@@ -101,6 +112,59 @@ namespace TinyBlog.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var post = await _context.PostTable!.FirstOrDefaultAsync(x=>x.Id==id);
+             var LoggedInUSer=await _userManager.Users.FirstOrDefaultAsync(x=>x.UserName==User.Identity!.Name);
+            var userrole = await _userManager.GetRolesAsync(LoggedInUSer!);
+            if (userrole[0] == WebsiteRoles.WebsiteAdmin || LoggedInUSer?.Id == post?.ApplicationUserID) {
+            if(post == null)
+            {
+                _notification.Error("User not found");
+                return View();
+            }   
+            var vm = new CreatePostVMcs()
+            {
+               Id =post.Id,
+               Title= post.Title,
+               Description = post.Description,
+               ShortDescription = post.ShortDescription,
+               ApplicationUserID=post.ApplicationUserID,
+               ThumbnailUrl =post.ThumbnailUrl
+            };
+            return View(vm);
+            }
+            _notification.Warning("Authority not given");
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CreatePostVMcs vm)
+        {
+            if (!ModelState.IsValid)
+            {
+            return View(vm);
+
+            }
+            var post =await _context.PostTable!.FirstOrDefaultAsync(x=>x.Id==vm.Id);
+            if(post == null)
+            {
+                _notification.Error("User not found");
+                return View(vm);
+            }
+            post.Title = vm.Title;
+            post.Description = vm.Description;
+            post.ShortDescription = vm.ShortDescription;
+            if (vm.Thumbnail != null)
+            {
+                post.ThumbnailUrl = UploadImage(vm.Thumbnail);
+            }
+            await _context.SaveChangesAsync();
+            _notification.Success("updated successfully");
+            return RedirectToAction("Index","Post",new {area ="Admin"});
+           
+       }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
