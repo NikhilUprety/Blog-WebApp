@@ -3,6 +3,7 @@ using TinyBlog.Models;
 using Microsoft.AspNetCore.Identity;
 
 using TinyBlog.Utilities;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FineBlog.Utilites
 {
@@ -40,27 +41,27 @@ namespace FineBlog.Utilites
                     _userManager.AddToRoleAsync(appUser, WebsiteRoles.WebsiteAdmin).GetAwaiter().GetResult();
                 }
 
+                
+                var listOfPages = new List<page>()
+                {
+                    new page()
+                    {
+                         Tittle = "About Us",
+                        Slug = "about"
+                    },
+                    new page()
+                    {
+                        Tittle = "Contact Us",
+                        Slug = "contact"
+                    },
+                    new page()
+                    {
+                        Tittle = "Privacy Policy",
+                        Slug = "privacy"
+                    }
+                 };
 
-                //var listOfPages = new List<Page>()
-                //{
-                //    new Page()
-                //    {
-                //         Title = "About Us",
-                //        Slug = "about"
-                //    },
-                //    new Page()
-                //    {
-                //        Title = "Contact Us",
-                //        Slug = "contact"
-                //    },
-                //    new Page()
-                //    {
-                //        Title = "Privacy Policy",
-                //        Slug = "privacy"
-                //    }
-                // };
-
-                //_context.Pages!.AddRange(listOfPages);
+                _context.PageTable!.AddRange(listOfPages);
 
                 //var setting = new Setting
                 //{
@@ -70,7 +71,7 @@ namespace FineBlog.Utilites
                 //};
 
                 //_context.Settings!.Add(setting);
-                _context.SaveChanges();
+                //_context.SaveChanges();
 
             }
         }
