@@ -71,7 +71,7 @@ namespace FineBlog.Utilites
                 //};
 
                 //_context.Settings!.Add(setting);
-                //_context.SaveChanges();
+                _context.SaveChanges();
 
             }
         }
