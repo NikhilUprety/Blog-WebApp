@@ -212,7 +212,7 @@ public async Task<IActionResult> Index()
         //            mail.To.Add(recipientEmail);
         //            mail.Subject = "Password Reset";
 
-        //            // Compose the email body
+        //            // Compose the email bodyz
         //            mail.Body = $@"
         //                <html>
         //                <body>
