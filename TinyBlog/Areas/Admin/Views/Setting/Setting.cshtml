@@ -1,0 +1,92 @@
+﻿@model TinyBlog.ViewModel.CreatePostVMcs
+
+@{
+    ViewData["Title"] = "Setting";
+}
+
+<div class="container-fluid">
+    <a class=" mb-2 btn btn-success" asp-action="Index" asp-controller="Post">Go Back</a>
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="card-title text-white">New Post</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" asp-action="Edit" asp-controller="Post" asp-area="Admin" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Thumbnail" />
+
+                <div class="row mb-2">
+                    <div class="col-9">
+                        <div class="mb-2">
+                            <label>Title</label>
+                            <input type="text" asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2">
+                            <label>Short Description</label>
+                            <input type="text" asp-for="ShortDescription" class="form-control" />
+                            <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2">
+                            <label>Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="8"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="mb-2">
+                            @if (Model.ThumbnailUrl == null)
+                            {
+                                <img src="~/thumbnails/maledefault.png" class="img-fluid" id="thumbnail" />
+                            }
+                            else
+                            {
+                                <img src="~/thumbnails/@Model.ThumbnailUrl" class="img-fluid" id="thumbnail" />
+
+                            }
+
+
+                        </div>
+                        <div class="mb-2">
+                            <label>Thumbnail</label>
+                            <input type="file" asp-for="Thumbnail" class="custom-file" />
+                            <span asp-validation-for="Thumbnail" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(".custom-file").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            document.getElementById('thumbnail').src = window.URL.createObjectURL(this.files[0])
+        });
+    </script>
+    <!-- Place the first <script> tag in your HTML's <head> -->
+    <script src="https://cdn.tiny.cloud/1/6bxe2evu3ehnrf943lnn05o007z2rigq205ez35ifulepvmj/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ],
+        });
+    </script>
+
+}
