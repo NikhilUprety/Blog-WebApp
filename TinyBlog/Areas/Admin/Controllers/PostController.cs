@@ -63,7 +63,7 @@ namespace TinyBlog.Areas.Admin.Controllers
                 AuthorName=x.ApplicationUser!.FirstName+" "+x.ApplicationUser!.LastName
 
                     
-            }).ToList();
+            }).OrderByDescending(x=>x.CreatedDate).ToList();
             return View(listofPostsVM);
             }
             else {
@@ -155,6 +155,7 @@ namespace TinyBlog.Areas.Admin.Controllers
             }
             post.Title = vm.Title;
             post.Description = vm.Description;
+            post.CreatedTime = DateTime.UtcNow;
             post.ShortDescription = vm.ShortDescription;
             if (vm.Thumbnail != null)
             {
