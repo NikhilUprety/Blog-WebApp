@@ -1,11 +1,26 @@
-﻿<!DOCTYPE html>
+﻿
+@using TinyBlog.ViewModel;
+@using TinyBlog.Data;
+@inject ApplicationDbContext _context
+
+@{
+    var setting = _context.settingTable !.ToList();
+    var vm = new SettingVM()
+            {
+                SiteName = setting[0].SiteName,
+                GithubUrl = setting[0].GithubUrl,
+                LinkedinUrl = setting[0].LinkedinUrl,
+                TwitterUrl = setting[0].TwitterUrl
+            };
+}
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-    <title>@ViewData["Title"] - SAGE-Blog</title>
+    <title>@ViewData["Title"] -@vm.SiteName</title>
     <link rel="icon" type="image/x-icon" href="~/blog/assets/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -19,7 +34,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" asp-action="Index" asp-controller="Home">SAGE BLOG</a>
+                <a class="navbar-brand" asp-action="Index" asp-controller="Home">@vm.SiteName</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -45,7 +60,7 @@
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <ul class="list-inline text-center">
                             <li class="list-inline-item">
-                                <a href="#!">
+                                <a href="@vm.TwitterUrl">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack"></i>
                                         <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
@@ -53,15 +68,15 @@
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a href="#!">
+                                <a href="@vm.LinkedinUrl">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack"></i>
-                                        <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                    < <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
                                     </span>
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a href="#!">
+                                <a href="@vm.GithubUrl">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack"></i>
                                         <i class="fab fa-github fa-stack-1x fa-inverse"></i>
@@ -69,7 +84,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2023</div>
+                        <div class="small text-center text-muted fst-italic">Copyright &copy; @vm.SiteName</div>
                     </div>
                 </div>
             </div>
