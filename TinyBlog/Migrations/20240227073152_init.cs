@@ -70,6 +70,25 @@ namespace TinyBlog.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "settingTable",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SiteName = table.Column<string>(type: "text", nullable: true),
+                    Title = table.Column<string>(type: "text", nullable: true),
+                    ShortDescription = table.Column<string>(type: "text", nullable: true),
+                    ThumbnailUrl = table.Column<string>(type: "text", nullable: true),
+                    TwitterUrl = table.Column<string>(type: "text", nullable: true),
+                    LinkedinUrl = table.Column<string>(type: "text", nullable: true),
+                    GithubUrl = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_settingTable", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -264,6 +283,9 @@ namespace TinyBlog.Migrations
 
             migrationBuilder.DropTable(
                 name: "PostTable");
+
+            migrationBuilder.DropTable(
+                name: "settingTable");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

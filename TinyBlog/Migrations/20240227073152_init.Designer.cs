@@ -12,8 +12,8 @@ using TinyBlog.Data;
 namespace TinyBlog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240221100753_postupdate")]
-    partial class postupdate
+    [Migration("20240227073152_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -254,7 +254,41 @@ namespace TinyBlog.Migrations
                     b.ToTable("PageTable");
                 });
 
-            modelBuilder.Entity("TinyBlog.Models.post", b =>
+            modelBuilder.Entity("TinyBlog.Models.Setting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("GithubUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LinkedinUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ShortDescription")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SiteName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ThumbnailUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TwitterUrl")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("settingTable");
+                });
+
+            modelBuilder.Entity("TinyBlog.Models.settingVM", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -354,7 +388,7 @@ namespace TinyBlog.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TinyBlog.Models.post", b =>
+            modelBuilder.Entity("TinyBlog.Models.settingVM", b =>
                 {
                     b.HasOne("TinyBlog.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("posts")
