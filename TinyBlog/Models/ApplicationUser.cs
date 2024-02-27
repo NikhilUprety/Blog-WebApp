@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 
 namespace TinyBlog.Models
 {
@@ -6,7 +7,7 @@ namespace TinyBlog.Models
     {
         public string? FirstName { get; set; }  
         public string? LastName { get; set;}
-        public List<post>? posts { get; set; }
+        public List<post>? Posts { get; set; }
 
     }
 
