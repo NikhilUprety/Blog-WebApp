@@ -16,7 +16,8 @@ upload profile picture, log in, logout, create a new post, update and delete the
 #### BlogsViewPAge
 ![blogs](https://github.com/NikhilUprety/Blog-Website/assets/105978476/5b74a1e1-2cf7-44bf-b85f-273eecc47992)
 #### BLog
-![hunterxhunter](https://github.com/NikhilUprety/Blog-Website/assets/105978476/fa04de7c-7a31-439c-9e82-33ab98be6ba9)
+![blogview](https://github.com/NikhilUprety/Blog-Website/assets/105978476/d1de684b-bf7d-4406-aa24-f73dba5f9ef4)
+
 #### LoginPage 
 ![loginsc](https://github.com/NikhilUprety/Blog-Website/assets/105978476/488071bc-97c6-40bf-9a06-b15a5cec1a05)
 ### Admin Area
