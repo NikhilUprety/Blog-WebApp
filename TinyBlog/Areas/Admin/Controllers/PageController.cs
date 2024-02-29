@@ -153,13 +153,9 @@ namespace TinyBlog.Areas.Admin.Controllers
             page.ShortDescription = vm.ShortDescription;
             page.Description = vm.Description;
 
-            if (vm.ThumbnailUrl != null)
-            {
-
                 page.ThumbnailUrl = UploadImage(vm.Thumbnail);
-            }
             await _context.SaveChangesAsync();
-            _notification.Success("About page updated sucessfully");
+                _notification.Success("About page updated sucessfully");
             return RedirectToAction("Index", "Post", new { area = "Admin" });
         }
         private string UploadImage(IFormFile file)

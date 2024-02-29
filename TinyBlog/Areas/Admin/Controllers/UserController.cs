@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using NuGet.Common;
 using NuGet.Protocol.Plugins;
 using System.Drawing.Text;
+using System.Threading.Tasks;
+using TinyBlog.Data;
 using TinyBlog.Models;
 using TinyBlog.Utilities;
 using TinyBlog.ViewModel;
@@ -18,15 +20,15 @@ namespace TinyBlog.Areas.Admin.Controllers
     [Area("Admin")]
     public class UserController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _SignInUser;
         private readonly INotyfService _notification;
-      
+        private object user;
 
-
-
-        public UserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> SignInUser, INotyfService notification)
+        public UserController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> SignInUser, INotyfService notification)
         {
+            _context = context;
             _userManager = userManager;
             _SignInUser = SignInUser;
             _notification = notification;
@@ -199,47 +201,6 @@ public async Task<IActionResult> Index()
             _notification.Success("succesfully logout");
             return RedirectToAction("Index","Home",new {area = ""});
         }
-
-
-   
-        //public async Task SendResetPasswordEmailAsync(string recipientEmail, string resetLink)
-        //{
-        //    try
-        //    {
-        //        using (MailMessage mail = new MailMessage())
-        //        {
-        //            mail.From = new MailAddress(_smtpUsername);
-        //            mail.To.Add(recipientEmail);
-        //            mail.Subject = "Password Reset";
-
-        //            // Compose the email bodyz
-        //            mail.Body = $@"
-        //                <html>
-        //                <body>
-        //                    <p>You have requested to reset your password.</p>
-        //                    <p>Please click the following link to reset your password:</p>
-        //                    <a href='{resetLink}'>{resetLink}</a>
-        //                </body>
-        //                </html>
-        //            ";
-        //            mail.IsBodyHtml = true;
-
-        //            using (SmtpClient smtpClient = new SmtpClient(_smtpServer, _smtpPort))
-        //            {
-        //                smtpClient.Credentials = new NetworkCredential(_smtpUsername, _smtpPassword);
-        //                smtpClient.EnableSsl = true;
-        //                await smtpClient.SendMailAsync(mail);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Handle exception
-        //        Console.WriteLine($"Failed to send reset password email: {ex.Message}");
-        //    }
-        //}
-
-
 
 
         [HttpGet("AccessDenied")]
