@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
+using System.ComponentModel.DataAnnotations;
 
 namespace TinyBlog.Models
 {
