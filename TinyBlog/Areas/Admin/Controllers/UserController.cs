@@ -202,6 +202,23 @@ public async Task<IActionResult> Index()
             return RedirectToAction("Index","Home",new {area = ""});
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var user =  await _userManager.FindByIdAsync(id.ToString());
+           
+            var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity!.Name);
+            var loggedInUserRole = await _userManager.GetRolesAsync(loggedInUser!);
+
+            if (loggedInUserRole[0] == WebsiteRoles.WebsiteAdmin )
+            {
+                await _userManager.DeleteAsync(user);
+                await _context.SaveChangesAsync();
+                _notification.Success("User Deleted Successfully");
+                return RedirectToAction("Index", "User", new { area = "Admin" });
+            }
+            return View();
+        }
 
         [HttpGet("AccessDenied")]
         public IActionResult AccessDenied()
