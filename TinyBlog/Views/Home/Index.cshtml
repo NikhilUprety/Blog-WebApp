@@ -1,14 +1,18 @@
 ﻿@model TinyBlog.ViewModel.HomeVM;
 
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Common
+
 @{
     ViewData["Title"] = "Home Page";
     string thumbnailurl = "";
-    if (thumbnailurl == null)
+    if (Model.ThumbnailUrl == null)
     {
         thumbnailurl = "~/blog/assets/img/home-bg.jpg";
     }else
     {
-        thumbnailurl = Model.ThumbnailUrl!;
+        thumbnailurl = "/thumbnails/" + Model.ThumbnailUrl;
     }
     }
     <header class="masthead" style="background-image: url('@thumbnailurl')">
@@ -31,28 +35,55 @@
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <!-- Post preview-->
                 
+                
                 @foreach(var post in Model.Posts!)
                 {
-                
-                <div class="post-preview">
-                    <a href="post.html">
-                        <h2 class="post-title">@post.Title</h2>
-                        <h3 class="post-subtitle">@post.ShortDescription</h3>
-                    </a>
-                    <p class="post-meta">
-                        Posted by
-                        <a href="#!">@post.ApplicationUser!.FirstName @post.ApplicationUser.LastName</a>
-                        on September 24, 2023
-                    </p>
-                </div>
+
+
+                <div class="post-preview d-flex align-items-center justify-content-between border border-secondary shadow-lg mb-2 p-2">
+                    <div class="thumbnail-container">
+                        @if (post.ThumbnailUrl == null)
+                        {
+                                <img src="~/thumbnails/maledefault.png" alt="Thumbnail"
+                                class="thumbnail" style="height:200px;width:200px;object-fit:cover;">
+
+                            }
+                            else
+                            {   
+                            <img src="~/thumbnails/@post.ThumbnailUrl" alt="Thumbnail" 
+                        class="thumbnail" style="height:200px;width:200px;object-fit:contain;">
+                                
+                            }
+                    </div>
+                    <div class="post-content">
+                        <a asp-action="post" asp-controller="Blog" asp-route-slug="@post.slug">
+                            <h2 class="post-title">@post.Title</h2>
+                            <h4 class="post-subtitle">@post.ShortDescription</h4>
+                        </a>
+                        <p class="post-meta">   
+                            Posted by
+                            <a href="#!">@post.ApplicationUser!.FirstName @post.ApplicationUser.LastName</a>
+                            on September 24, 2023
+                        </p>
+                    </div>
+                  </div>
+                  
                 }
-                <!-- Divider-->
+                        Page @(Model?.Posts.PageCount < Model?.Posts.PageNumber ? 0 : Model!.Posts.PageNumber) of @Model.Posts.PageCount
+                        @Html.PagedListPager(Model.Posts,page => Url.Action("Index",
+                    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+                    new PagedListRenderOptions()
+                    {
+                    ContainerDivClasses = new List<string> {"d-flex justify-content-start mb-4"},
+                    UlElementClasses = new List<string> {"pagination"},
+                    LiElementClasses = new List<string> {"btn btn-primary mx-1 text-uppercase"},
+                    ActiveLiElementClass =  "active",
+                    })
+               
                 
                 </div>
-                <!-- Divider-->
-                <hr class="my-4" />
-                <!-- Pager-->
-                <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+              
+                
             </div>
         </div>
     </div>

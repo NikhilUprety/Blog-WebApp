@@ -63,14 +63,6 @@ namespace FineBlog.Utilites
 
                 _context.PageTable!.AddRange(listOfPages);
 
-                //var setting = new Setting
-                //{
-                //    SiteName = "Site Name",
-                //    Title = "Site Title",
-                //    ShortDescription = "Short Description of site"
-                //};
-
-                //_context.Settings!.Add(setting);
                 _context.SaveChanges();
 
             }
