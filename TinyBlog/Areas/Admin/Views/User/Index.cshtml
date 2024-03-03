@@ -39,7 +39,7 @@
                                 <a class="bg-success p-1 text-light rounded" asp-action="ResetPassword" asp-controller="User" asp-route-id="@user.ID">
                                     <ion-icon name="create-outline">Reset Password</ion-icon>
                                 </a>
-                                <a class="bg-danger p-1 text-light rounded ">
+                                <a class="bg-danger p-1 text-light rounded" asp-action="Delete" asp-controller="User" asp-route-id="@user.ID">
 
                                     <ion-icon name="trash-outline"></ion-icon>
                                 </a>

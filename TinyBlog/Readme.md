@@ -11,5 +11,5 @@ upload profile picture, log in, logout, create a new post, update and delete the
 -	Entity Framework Core
 	
 ### Preview:-
-![Homepage](/peviewphotos/blogs.png)
+
 

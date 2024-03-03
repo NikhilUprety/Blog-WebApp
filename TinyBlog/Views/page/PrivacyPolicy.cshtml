@@ -1,16 +1,18 @@
 ﻿@model TinyBlog.ViewModel.PageVMcs
 @{
+    ViewData["Title"] = "Privacy Policy";
 
-    ViewData["Title"] = "Privacy";
     string pageThumbnail = "";
+
     if (Model.ThumbnailUrl == null)
     {
-        pageThumbnail = "/blog/assets/img/contact-bg.jpg";
+        pageThumbnail = "/blog/assets/img/about-bg.jpg";
     }
     else
     {
         pageThumbnail = "/thumbnails/" + Model.ThumbnailUrl;
     }
+
 
 }
     
