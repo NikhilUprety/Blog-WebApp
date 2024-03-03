@@ -1,4 +1,5 @@
 ﻿using TinyBlog.Models;
+using X.PagedList;
 
 namespace TinyBlog.ViewModel
 {
@@ -7,6 +8,6 @@ namespace TinyBlog.ViewModel
         public string? Title { get; set; }
         public string? ShortDescription { get; set; }
         public string? ThumbnailUrl { get; set; }
-        public List<post>? Posts { get; set; }
+        public IPagedList<post>? Posts { get; set; }
     }
 }
